@@ -8,10 +8,13 @@ export type DOMElement = {
 };
 
 export function createElement(
-  type: string,
+  type: string | Function,
   props: any,
   ...children: any[]
 ): DOMElement {
+  if (typeof type === "function"){
+    return type(props || {})
+  }
   return {
     type,
     props: props || {},

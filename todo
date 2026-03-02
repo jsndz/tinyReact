@@ -1,0 +1,235 @@
+# Tiny UI Renderer — Learning React (Checklist)
+
+## Phase 0: Tooling & Setup (Do Once)
+
+* [ ] Use **Bun** as the dev server (static file server only)
+* [ ] Use **Babel** to compile JSX → `createElement` calls
+* [ ] Bundle everything into `public/main.js` using `bun build`
+* [ ] Ensure all UI code runs **in the browser**, not on the server
+* [ ] Server responsibility:
+
+  * [ ] Serve `index.html`
+  * [ ] Serve `main.js`
+  * [ ] Do NOT render HTML on the server
+
+### Tooling rules
+
+* JSX is compiled at **build time**
+* No JSX parsing at runtime
+* No `jsdom`
+* No React dependency
+
+---
+
+## Phase 1: JSX → Virtual DOM
+
+### JSX compilation
+
+* [ ] Configure Babel with `@babel/preset-react`
+* [ ] Use **classic runtime**
+* [ ] Point JSX factory to **your own `createElement`**
+* [ ] Add `/** @jsx createElement */` pragma
+* [ ] Use `.tsx` for JSX files
+
+### TypeScript support
+
+* [ ] Set `jsx: "react"` in `tsconfig.json`
+* [ ] Set `jsxFactory: "createElement"`
+* [ ] Add `src/jsx.d.ts` defining `JSX.IntrinsicElements`
+
+---
+
+## Phase 2: Virtual DOM Structure
+
+* [ ] Define a `DOMElement` type:
+
+  * [ ] `type: string` (`"div"`, `"p"`, `"text"`)
+  * [ ] `props: object`
+  * [ ] `children: DOMElement[]`
+  * [ ] `dom: HTMLElement | Text | null`
+
+### Rules
+
+* [ ] VDOM contains **descriptions only**
+* [ ] No real DOM nodes inside VDOM
+* [ ] Text nodes are explicit (`type: "text"`)
+
+---
+
+## Phase 3: `createElement`
+
+* [ ] Implement `createElement(type, props, ...children)`
+* [ ] Normalize children into an array
+* [ ] Convert strings/numbers into `"text"` nodes
+* [ ] Do NOT handle DOM here
+
+### Goal
+
+* JSX becomes **plain JavaScript objects**
+* JSX stops feeling magical
+
+---
+
+## Phase 4: Initial Mount (First Render)
+
+* [ ] Implement `mount(vNode)`
+* [ ] Create real DOM nodes using:
+
+  * [ ] `document.createElement`
+  * [ ] `document.createTextNode`
+* [ ] Apply props:
+
+  * [ ] Attributes
+  * [ ] Event listeners (`onClick`, etc.)
+* [ ] Recursively mount children
+* [ ] Store DOM reference on `vNode.dom`
+
+### Rule
+
+* [ ] Mount creates DOM
+* [ ] Render creates VDOM
+
+---
+
+## Phase 5: Render Loop
+
+* [x] Create a `render()` function
+* [x] Track the **previous VDOM tree**
+* [x] On first render:
+
+  * [x] Mount entire tree
+* [x] On update:
+
+  * [x] Create new VDOM
+  * [x] Diff with old VDOM
+
+---
+
+## Phase 6: Re-render Everything (Before Diffing)
+
+* [ ] On state change:
+
+  * [ ] Re-run component function
+  * [ ] Replace entire DOM tree
+* [ ] Do NOT optimize yet
+
+### Purpose
+
+* Understand re-rendering clearly
+* Confirm correctness before diffing
+
+---
+
+## Phase 7: Minimal Diffing
+
+* [ ] Implement `diff(oldNode, newNode, parentDom)`
+* [ ] Handle only:
+
+  * [ ] Node created
+  * [ ] Node removed
+  * [ ] Type changed → replace
+  * [ ] Text changed → update
+  * [ ] Same type → update props + children
+* [ ] Children diffed by index only
+* [ ] No keys
+* [ ] No reordering
+
+### Learning goal
+
+* Understand why React keeps previous trees
+
+---
+
+## Phase 8: Props & Events Update
+
+* [ ] Add prop diffing:
+
+  * [ ] Add new props
+  * [ ] Update changed props
+  * [ ] Remove missing props
+* [ ] Handle events explicitly:
+
+  * [ ] Remove old listeners
+  * [ ] Add new listeners
+
+---
+
+## Phase 9: Hooks System (`useState`)
+
+* [ ] Create a `hooks` array
+* [ ] Create a `hookIndex`
+* [ ] Reset `hookIndex` before each render
+
+### `useState`
+
+* [ ] Initialize state on first render
+* [ ] Read state by call order
+* [ ] `setState` updates value
+* [ ] `setState` triggers re-render
+
+### Learning goal
+
+* Understand why hooks must be called in the same order
+
+---
+
+## Phase 10: Effects (`useEffect`)
+
+* [ ] Collect effects during render
+* [ ] Run effects after DOM updates
+* [ ] Store cleanup functions
+* [ ] Run cleanup before next effect
+* [ ] Compare dependencies shallowly
+
+### Learning goal
+
+* Understand render vs commit phases
+
+---
+
+## Phase 11: Demo Component
+
+Build **one** component demonstrating:
+
+* [ ] State updates
+* [ ] Event handling
+* [ ] Conditional rendering
+* [ ] Effects + cleanup
+
+Examples:
+
+* Counter
+* Toggle
+* Input field
+
+---
+
+## Phase 12: Write the Learning Summary
+
+Document:
+
+* [ ] What you built
+* [ ] Why JSX is not runtime magic
+* [ ] Why re-rendering is normal
+* [ ] Why hooks rely on order
+* [ ] Why effects run after DOM updates
+* [ ] What React does beyond this project
+
+---
+
+## Stop Condition
+
+You can stop when:
+
+* [ ] State updates feel predictable
+* [ ] Hooks rules feel obvious
+* [ ] DOM updates make sense
+* [ ] React no longer feels magical
+
+---
+
+## Final Principle
+
+> React is a UI calculation engine that happens to target the DOM.
+
+---

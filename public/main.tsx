@@ -1,16 +1,46 @@
 /** @jsx createElement */
 
 import { createElement } from "../src/vdom";
-import { mount } from "../src/dom/mount";
+import { render } from "../src/dom/render";
+const app = document.getElementById("app")!;
 
-function Card() {
+const renderButton = document.getElementById("render-button")!;
+renderButton.addEventListener("click", () => {
+  render(app, App);
+});
+
+const rerenderButton = document.getElementById("re-render-button")!;
+rerenderButton.addEventListener("click", () => {
+  render(app, App);
+});
+function App() {
   return (
     <div>
       <h1>Hello JSX</h1>
       <p>This is Babel compiled</p>
+      <FirstCard/>
+      <SecondCard/>
     </div>
   );
 }
 
-const app = document.getElementById("app")!;
-app.appendChild(mount(Card()));
+
+function FirstCard(){
+  return (
+    <div>
+      <h1>First Card</h1>
+      <p>This is the first card</p>
+    </div>
+  )
+}
+
+function SecondCard(){
+  return (
+    <div>
+      <h1>Second Card</h1>
+      <p>This is the second card</p>
+    </div>
+  )
+}
+
+

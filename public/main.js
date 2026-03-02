@@ -1,5 +1,8 @@
 // src/vdom.ts
 function createElement(type, props, ...children) {
+  if (typeof type === "function") {
+    return type(props || {});
+  }
   return {
     type,
     props: props || {},
@@ -11,6 +14,11 @@ function createElement(type, props, ...children) {
     }),
     dom: null
   };
+}
+
+// src/dom/diff.ts
+function diff(prevdom, currDOM, app) {
+  console.log("diffing", prevdom.type, "→", currDOM.type);
 }
 
 // src/dom/mount.ts
@@ -36,9 +44,36 @@ function mount(v) {
   return dom;
 }
 
-// public/main.tsx
-function Card() {
-  return /* @__PURE__ */ createElement("div", null, /* @__PURE__ */ createElement("h1", null, "Hello JSX"), /* @__PURE__ */ createElement("p", null, "This is Babel compiled"));
+// src/dom/render.ts
+var isFirstRender = true;
+var prevVDOM = null;
+function render(app, vdom) {
+  const nextVDOM = vdom();
+  if (isFirstRender) {
+    app.appendChild(mount(nextVDOM));
+    isFirstRender = false;
+  } else {
+    diff(nextVDOM, prevVDOM, app);
+  }
+  prevVDOM = nextVDOM;
 }
+
+// public/main.tsx
 var app = document.getElementById("app");
-app.appendChild(mount(Card()));
+var renderButton = document.getElementById("render-button");
+renderButton.addEventListener("click", () => {
+  render(app, App);
+});
+var rerenderButton = document.getElementById("re-render-button");
+rerenderButton.addEventListener("click", () => {
+  render(app, App);
+});
+function App() {
+  return /* @__PURE__ */ createElement("div", null, /* @__PURE__ */ createElement("h1", null, "Hello JSX"), /* @__PURE__ */ createElement("p", null, "This is Babel compiled"), /* @__PURE__ */ createElement(FirstCard, null), /* @__PURE__ */ createElement(SecondCard, null));
+}
+function FirstCard() {
+  return /* @__PURE__ */ createElement("div", null, /* @__PURE__ */ createElement("h1", null, "First Card"), /* @__PURE__ */ createElement("p", null, "This is the first card"));
+}
+function SecondCard() {
+  return /* @__PURE__ */ createElement("div", null, /* @__PURE__ */ createElement("h1", null, "Second Card"), /* @__PURE__ */ createElement("p", null, "This is the second card"));
+}
