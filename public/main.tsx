@@ -11,20 +11,21 @@ renderButton.addEventListener("click", () => {
 
 const rerenderButton = document.getElementById("re-render-button")!;
 rerenderButton.addEventListener("click", () => {
+  toggle = !toggle;
   render(app, App);
 });
+let toggle = false;
+
 function App() {
   return (
     <div>
-      <h1>Hello JSX</h1>
+      <h1>{toggle ? "Hello JSX" : "Hello World"}</h1>
       <p>This is Babel compiled</p>
       <FirstCard/>
       <SecondCard/>
     </div>
   );
 }
-
-
 function FirstCard(){
   return (
     <div>

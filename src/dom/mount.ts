@@ -21,6 +21,7 @@ export function mount(v: DOMElement): HTMLElement | Text {
       dom.appendChild(mount(child));
     }
   }
+  console.log("dom for",v.type, "is",dom);
 
   v.dom = dom;
   return dom;

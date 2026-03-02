@@ -107,11 +107,10 @@
 
 ## Phase 6: Re-render Everything (Before Diffing)
 
-* [ ] On state change:
+* [x] On state change:
 
-  * [ ] Re-run component function
-  * [ ] Replace entire DOM tree
-* [ ] Do NOT optimize yet
+  * [x] Re-run component function
+  * [x] Replace entire DOM tree
 
 ### Purpose
 
@@ -122,13 +121,13 @@
 
 ## Phase 7: Minimal Diffing
 
-* [ ] Implement `diff(oldNode, newNode, parentDom)`
+* [x] Implement `diff(oldNode, newNode, parentDom)`
 * [ ] Handle only:
 
-  * [ ] Node created
-  * [ ] Node removed
-  * [ ] Type changed → replace
-  * [ ] Text changed → update
+  * [x] Node created
+  * [x] Node removed
+  * [x] Type changed → replace
+  * [x] Text changed → update
   * [ ] Same type → update props + children
 * [ ] Children diffed by index only
 * [ ] No keys
@@ -214,17 +213,6 @@ Document:
 * [ ] Why hooks rely on order
 * [ ] Why effects run after DOM updates
 * [ ] What React does beyond this project
-
----
-
-## Stop Condition
-
-You can stop when:
-
-* [ ] State updates feel predictable
-* [ ] Hooks rules feel obvious
-* [ ] DOM updates make sense
-* [ ] React no longer feels magical
 
 ---
 

@@ -11,8 +11,12 @@ export function render(app: HTMLElement, vdom: () => DOMElement) {
     app.appendChild(mount(nextVDOM));
     isFirstRender = false;
   } else {
- 
-    diff(nextVDOM, prevVDOM!, app);
+    diff(prevVDOM!, nextVDOM!, app);
   }
   prevVDOM = nextVDOM;
 }
+
+// function for re-rendering the whole dom
+// export function render(app:HTMLElement,vdom:()=>DOMElement){
+//   app.appendChild(mount(vdom()))
+// }

@@ -16,11 +16,6 @@ function createElement(type, props, ...children) {
   };
 }
 
-// src/dom/diff.ts
-function diff(prevdom, currDOM, app) {
-  console.log("diffing", prevdom.type, "→", currDOM.type);
-}
-
 // src/dom/mount.ts
 function mount(v) {
   let dom;
@@ -40,8 +35,39 @@ function mount(v) {
       dom.appendChild(mount(child));
     }
   }
+  console.log("dom for", v.type, "is", dom);
   v.dom = dom;
   return dom;
+}
+
+// src/dom/diff.ts
+function diff(prevdom, currDOM, app) {
+  console.log("diffing", prevdom.type, "→", currDOM.type);
+  compare(prevdom, currDOM, app);
+}
+function compare(oldNode, newNode, parentDom) {
+  if (!oldNode && newNode) {
+    parentDom.appendChild(mount(newNode));
+  }
+  if (!newNode && oldNode) {
+    parentDom.removeChild(mount(oldNode));
+  }
+  if (newNode.type !== oldNode.type) {
+    parentDom.replaceChild(mount(oldNode), mount(newNode));
+  }
+  newNode.dom = oldNode.dom;
+  if (newNode.type === "text") {
+    console.log(newNode, oldNode);
+    if (oldNode.props.text !== newNode.props.text) {
+      oldNode.dom.nodeValue = newNode.props.text;
+    }
+    return;
+  }
+  const max = Math.max(oldNode.children.length, newNode.children.length);
+  for (let i = 0;i < max; i++) {
+    console.log("helloi");
+    compare(oldNode.children[i] || null, newNode.children[i] || null, oldNode.dom);
+  }
 }
 
 // src/dom/render.ts
@@ -53,7 +79,7 @@ function render(app, vdom) {
     app.appendChild(mount(nextVDOM));
     isFirstRender = false;
   } else {
-    diff(nextVDOM, prevVDOM, app);
+    diff(prevVDOM, nextVDOM, app);
   }
   prevVDOM = nextVDOM;
 }
@@ -66,10 +92,12 @@ renderButton.addEventListener("click", () => {
 });
 var rerenderButton = document.getElementById("re-render-button");
 rerenderButton.addEventListener("click", () => {
+  toggle = !toggle;
   render(app, App);
 });
+var toggle = false;
 function App() {
-  return /* @__PURE__ */ createElement("div", null, /* @__PURE__ */ createElement("h1", null, "Hello JSX"), /* @__PURE__ */ createElement("p", null, "This is Babel compiled"), /* @__PURE__ */ createElement(FirstCard, null), /* @__PURE__ */ createElement(SecondCard, null));
+  return /* @__PURE__ */ createElement("div", null, /* @__PURE__ */ createElement("h1", null, toggle ? "Hello JSX" : "Hello World"), /* @__PURE__ */ createElement("p", null, "This is Babel compiled"), /* @__PURE__ */ createElement(FirstCard, null), /* @__PURE__ */ createElement(SecondCard, null));
 }
 function FirstCard() {
   return /* @__PURE__ */ createElement("div", null, /* @__PURE__ */ createElement("h1", null, "First Card"), /* @__PURE__ */ createElement("p", null, "This is the first card"));
