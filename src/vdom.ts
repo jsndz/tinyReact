@@ -1,14 +1,13 @@
 /// <reference lib="dom" />
 
-import { jsx2tokens, TOKEN_TYPES, type TypeToken } from "./tokenizer/tokenizer";
-import { JSDOM } from "jsdom";
+import {  TOKEN_TYPES, type TypeToken } from "./tokenizer/tokenizer";
+
 export type DOMElement = {
   type: string | Text;
   props: any;
   children: DOMElement[];
   dom: HTMLElement | Text | null;
 };
-
 
 function createElement(type: string): DOMElement {
   return {
@@ -27,6 +26,9 @@ export function createTextNode(text: string) {
     dom: null
   };
 }
+
+
+
 export function tokensToVDOM(tokens: TypeToken[]): DOMElement {
   const root: DOMElement = createElement("ROOT");
   const stack: DOMElement[] = [root];
@@ -73,6 +75,7 @@ export function tokensToVDOM(tokens: TypeToken[]): DOMElement {
           }
 
           el.props[key] = true;
+          // setting default value true for key
         }
 
         i++;
@@ -113,6 +116,6 @@ export function tokensToVDOM(tokens: TypeToken[]): DOMElement {
   return root;
 }
 
-
+// using stack for putting tag into stack so that we can add chidren to its parent 
 
 

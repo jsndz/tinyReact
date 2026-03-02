@@ -9,6 +9,9 @@
   "peerDependencies": {
     "typescript": "^5"
   },
+       "scripts": {
+          "start": "bun build ./public/main.ts --outfile ./public/main.js --target browser --watch & bun --watch index.ts"
+        },
   "dependencies": {
     "@types/express": "^5.0.6",
     "@types/jsdom": "^28.0.0",

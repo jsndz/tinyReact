@@ -1,23 +1,26 @@
 {
   "lockfileVersion": 1,
   "configVersion": 1,
-  "workspaces": {
-    "": {
-      "name": "tinyreact",
-      "dependencies": {
-        "@types/express": "^5.0.6",
-        "@types/jsdom": "^28.0.0",
-        "express": "^5.2.1",
-        "jsdom": "^28.1.0",
-      },
-      "devDependencies": {
-        "@types/bun": "latest",
-      },
-      "peerDependencies": {
-        "typescript": "^5",
-      },
+    "workspaces": {
+      "": {
+        "name": "tinyreact",
+        "dependencies": {
+          "@types/express": "^5.0.6",
+          "@types/jsdom": "^28.0.0",
+          "express": "^5.2.1",
+          "jsdom": "^28.1.0"
+        },
+      "scripts": {
+          "start": "bun build ./public/main.ts --outfile ./public/main.js --target browser --watch & bun --watch index.ts"
+        },
+        "devDependencies": {
+          "@types/bun": "latest"
+        },
+        "peerDependencies": {
+          "typescript": "^5"
+        }
+      }
     },
-  },
   "packages": {
     "@acemir/cssom": ["@acemir/cssom@0.9.31", "", {}, "sha512-ZnR3GSaH+/vJ0YlHau21FjfLYjMpYVIzTD8M8vIEQvIGxeOXyXdzCI140rrCY862p/C/BbzWsjc1dgnM9mkoTA=="],
 
@@ -269,6 +272,6 @@
 
     "@types/node/undici-types": ["undici-types@7.18.2", "", {}, "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w=="],
 
-    "jsdom/parse5": ["parse5@8.0.0", "", { "dependencies": { "entities": "^6.0.0" } }, "sha512-9m4m5GSgXjL4AjumKzq1Fgfp3Z8rsvjRNbnkVwfu2ImRqE5D0LnY2QfDen18FSY9C573YU5XxSapdHZTZ2WolA=="],
+    "jsdom/parse5": ["parse5@8.0.0", "", { "dependencies": { "entities": "^6.0.0" } }, "sha512-9m4m5GSgXjL4AjumKzq1Fgfp3Z8rsvjRNbnkVwfu2ImRqE5D0LnY2QfDen18FSY9C573YU5XxSapdHZTZ2WolA=="]
   }
 }
